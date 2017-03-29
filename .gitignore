@@ -5,4 +5,4 @@
 /vendor/
 /web/bundles/
 /bin/
-/.idea/
+/.idea/*
