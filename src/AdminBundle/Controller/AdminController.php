@@ -1,17 +1,15 @@
 <?php
 
-namespace AuthBundle\Controller;
+namespace AdminBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuthController extends Controller
+class AdminController extends Controller
 {
     public function indexAction()
     {
-        dump($this->getUser());
-
-        return $this->render('AuthBundle::homepage.html.twig', ['user' => $this->getUser()]);
+        return $this->render('AdminBundle::index.html.twig');
     }
 }
