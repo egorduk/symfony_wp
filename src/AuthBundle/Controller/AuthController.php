@@ -10,8 +10,6 @@ class AuthController extends Controller
 {
     public function indexAction()
     {
-        dump($this->getUser());
-
         return $this->render('AuthBundle::homepage.html.twig', ['user' => $this->getUser()]);
     }
 }
