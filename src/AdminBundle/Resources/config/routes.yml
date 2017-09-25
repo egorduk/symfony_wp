@@ -1,3 +1,35 @@
 admin_index:
   path:     /admin/index
   defaults: { _controller: AdminBundle:Admin:index }
+
+admin_panel:
+  path:     /admin/panel
+  defaults: { _controller: AdminBundle:Admin:panel }
+
+admin_posts:
+  path:     /admin/posts
+  defaults: { _controller: AdminBundle:Admin:posts }
+
+admin_post:
+    path:     /admin/post
+    defaults: { _controller: AdminBundle:Admin:post }
+
+admin_content_types:
+    path:     /admin/content_types
+    defaults: { _controller: AdminBundle:Admin:contentTypes }
+
+admin_content_type:
+    path:     /admin/content_type/add
+    defaults: { _controller: AdminBundle:Admin:addContentType }
+
+admin_delete_content_type:
+    path:     /admin/content_type/delete/{id}
+    defaults: { _controller: AdminBundle:Admin:deleteContentType }
+    requirements:
+        id: '\d+'
+
+admin_edit_content_type:
+    path:     /admin/content_type/edit/{id}
+    defaults: { _controller: AdminBundle:Admin:editContentType }
+    requirements:
+        id: '\d+'

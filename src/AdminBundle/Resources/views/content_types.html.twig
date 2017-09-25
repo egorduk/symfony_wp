@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% include 'AdminBundle::menu.html.twig' %}
+    Content types
+    {% for contentType in contentTypes %}
+        <li>Name - {{ contentType.name }}</li>
+        <li>Slug - {{ contentType.slug }}</li>
+        <li>Description - {{ contentType.description }}</li>
+        <li><a href="{{ path('admin_edit_content_type', {'id': contentType.id}) }}">Edit</a></li>
+        <li><a href="{{ path('admin_delete_content_type', {'id': contentType.id}) }}">Delete</a></li>
+    {% endfor %}
+{% endblock %}

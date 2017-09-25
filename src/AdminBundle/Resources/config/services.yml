@@ -1,4 +1,4 @@
 services:
-#    acme_server.example:
-#        class: Acme\ServerBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    admin.content_type_helper:
+        class: SecureBundle\Service\Helper\BidHelper
+        arguments: ['@doctrine.orm.entity_manager']
