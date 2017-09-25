@@ -18,7 +18,7 @@ admin_content_types:
     path:     /admin/content_types
     defaults: { _controller: AdminBundle:Admin:contentTypes }
 
-admin_content_type:
+admin_add_content_type:
     path:     /admin/content_type/add
     defaults: { _controller: AdminBundle:Admin:addContentType }
 
@@ -33,3 +33,11 @@ admin_edit_content_type:
     defaults: { _controller: AdminBundle:Admin:editContentType }
     requirements:
         id: '\d+'
+
+admin_add_taxonomy:
+    path:     /admin/taxonomy/add
+    defaults: { _controller: AdminBundle:Admin:addTaxonomy }
+
+admin_taxonomies:
+    path:     /admin/taxonomies
+    defaults: { _controller: AdminBundle:Admin:taxonomies }

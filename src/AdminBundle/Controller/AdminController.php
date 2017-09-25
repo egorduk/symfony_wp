@@ -3,6 +3,7 @@
 namespace AdminBundle\Controller;
 
 use AdminBundle\Entity\ContentType;
+use AdminBundle\Entity\Taxonomy;
 use AdminBundle\Form\ContentTypeForm;
 use AdminBundle\Repository\ContentTypeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -120,6 +121,18 @@ class AdminController extends Controller
         return $this->render('AdminBundle::content_type.html.twig', [
             'mode' => 'Edit',
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function taxonomiesAction()
+    {
+        $taxonomyRepository = $this->getDoctrine()
+            ->getRepository(Taxonomy::class);
+
+        $taxonomies = $taxonomyRepository->findAll();
+
+        return $this->render('AdminBundle::taxonomies.html.twig', [
+            'taxonomies' => $taxonomies
         ]);
     }
 }
