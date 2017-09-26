@@ -87,5 +87,10 @@ class Taxonomy
     {
         $this->parent = $parent;
     }
+
+    public function __toString()
+    {
+        return (string)$this->getId();
+    }
 }
 

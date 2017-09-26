@@ -41,3 +41,15 @@ admin_add_taxonomy:
 admin_taxonomies:
     path:     /admin/taxonomies
     defaults: { _controller: AdminBundle:Admin:taxonomies }
+
+admin_delete_taxonomy:
+    path:     /admin/taxonomy/delete/{id}
+    defaults: { _controller: AdminBundle:Admin:deleteTaxonomy }
+    requirements:
+        id: '\d+'
+
+admin_edit_taxonomy:
+    path:     /admin/taxonomy/edit/{id}
+    defaults: { _controller: AdminBundle:Admin:editTaxonomy }
+    requirements:
+        id: '\d+'

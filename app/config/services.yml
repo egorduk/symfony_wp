@@ -1,2 +1,3 @@
 imports:
     - { resource: "@AuthBundle/Resources/config/services.yml" }
+    - { resource: "@AdminBundle/Resources/config/services.yml" }

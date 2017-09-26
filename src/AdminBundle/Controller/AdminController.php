@@ -5,6 +5,7 @@ namespace AdminBundle\Controller;
 use AdminBundle\Entity\ContentType;
 use AdminBundle\Entity\Taxonomy;
 use AdminBundle\Form\ContentTypeForm;
+use AdminBundle\Form\TaxonomyForm;
 use AdminBundle\Repository\ContentTypeRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -105,9 +106,6 @@ class AdminController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
-            $contentTypeRepository = $this->getDoctrine()
-                ->getRepository(ContentType::class);
-
             $contentTypeRepository->save($formData, true);
 
             $this->addFlash(
@@ -126,13 +124,97 @@ class AdminController extends Controller
 
     public function taxonomiesAction()
     {
-        $taxonomyRepository = $this->getDoctrine()
-            ->getRepository(Taxonomy::class);
-
-        $taxonomies = $taxonomyRepository->findAll();
+        $taxonomies = $this->get('admin.taxonomy_helper')
+            ->getAllTaxonomies();
 
         return $this->render('AdminBundle::taxonomies.html.twig', [
             'taxonomies' => $taxonomies
+        ]);
+    }
+
+    public function addTaxonomyAction(Request $request)
+    {
+        $form = $this->createForm(TaxonomyForm::class, null, [
+            'entity_manager' => $this->getDoctrine()->getManager(),
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            $taxonomyRepository = $this->getDoctrine()
+                ->getRepository(Taxonomy::class);
+
+            $taxonomyRepository->save($formData, true);
+
+            $this->addFlash(
+                'success',
+                'Taxonomy was created!'
+            );
+
+            return $this->redirectToRoute('admin_taxonomies');
+        }
+
+        return $this->render('AdminBundle::taxonomy.html.twig', [
+            'mode' => 'Add',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function deleteTaxonomyAction($id)
+    {
+        $taxonomyRepository = $this->getDoctrine()
+            ->getRepository(Taxonomy::class);
+
+        $taxonomy = $taxonomyRepository->find($id);
+
+        if (!$taxonomy) {
+            throw $this->createNotFoundException('No taxonomy found for id ' . $id);
+        }
+
+        $taxonomyRepository->remove($taxonomy, true);
+
+        return $this->taxonomiesAction();
+    }
+
+    public function editTaxonomyAction(Request $request, $id)
+    {
+        $taxonomyRepository = $this->getDoctrine()
+            ->getRepository(Taxonomy::class);
+
+        $taxonomy = $taxonomyRepository->find($id);
+
+        if (!$taxonomy) {
+            throw $this->createNotFoundException('No taxonomy found for id ' . $id);
+        }
+
+        $parentTaxonomy = $taxonomyRepository->find($taxonomy->getParent());
+
+        $taxonomy->setParent($parentTaxonomy);
+
+        $form = $this->createForm(TaxonomyForm::class, $taxonomy, array(
+            'entity_manager' => $this->getDoctrine()->getManager(),
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            $taxonomyRepository->save($formData, true);
+
+            $this->addFlash(
+                'success',
+                'Taxonomy was updated!'
+            );
+
+            return $this->redirectToRoute('admin_taxonomies');
+        }
+
+        return $this->render('AdminBundle::taxonomy.html.twig', [
+            'mode' => 'Edit',
+            'form' => $form->createView(),
         ]);
     }
 }

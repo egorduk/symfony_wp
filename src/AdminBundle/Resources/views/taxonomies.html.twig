@@ -5,9 +5,9 @@
     Taxonomies
     {% for taxonomy in taxonomies %}
         <li>Name - {{ taxonomy.name }}</li>
-        <li>Parent - {{ taxonomy.parent }}</li>
+        <li>Parent - {{ taxonomy.parent_name }}</li>
         <li>Slug - {{ taxonomy.slug }}</li>
-        <li><a href="{{ path('admin_edit_content_type', {'id': taxonomy.id}) }}">Edit</a></li>
-        <li><a href="{{ path('admin_delete_content_type', {'id': taxonomy.id}) }}">Delete</a></li>
+        <li><a href="{{ path('admin_edit_taxonomy', {'id': taxonomy.id}) }}">Edit</a></li>
+        <li><a href="{{ path('admin_delete_taxonomy', {'id': taxonomy.id}) }}">Delete</a></li>
     {% endfor %}
 {% endblock %}

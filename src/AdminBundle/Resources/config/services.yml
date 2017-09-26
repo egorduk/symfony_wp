@@ -1,4 +1,9 @@
 services:
-    admin.content_type_helper:
-        class: SecureBundle\Service\Helper\BidHelper
+    admin.taxonomy_helper:
+        class: AdminBundle\Helper\TaxonomyHelper
         arguments: ['@doctrine.orm.entity_manager']
+
+    #app.exception_listener:
+    #    class: AdminBundle\EventListener\AddNoParentEventListener
+    #    tags:
+    #        - { name: kernel.event_listener, event: kernel.exception }
