@@ -7,11 +7,8 @@ use AdminBundle\Entity\Taxonomy;
 use AdminBundle\Form\ContentTypeForm;
 use AdminBundle\Form\TaxonomyForm;
 use AdminBundle\Form\UserForm;
-use AdminBundle\Repository\ContentTypeRepository;
 use AuthBundle\Entity\User;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdminController extends Controller

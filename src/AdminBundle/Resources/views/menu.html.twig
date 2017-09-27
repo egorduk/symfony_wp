@@ -3,7 +3,8 @@
     <ul>
         Posts
         <li><a href="{{ path('admin_posts') }}">All</a></li>
-        <li><a href="{{ path('admin_post') }}">New</a></li>
+        <li>New</li>
+        {{ render(controller('AdminBundle:Menu:contentTypesList')) }}
     </ul>
     <ul>
         Users
