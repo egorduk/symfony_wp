@@ -6,7 +6,9 @@ use AdminBundle\Entity\ContentType;
 use AdminBundle\Entity\Taxonomy;
 use AdminBundle\Form\ContentTypeForm;
 use AdminBundle\Form\TaxonomyForm;
+use AdminBundle\Form\UserForm;
 use AdminBundle\Repository\ContentTypeRepository;
+use AuthBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -128,7 +130,7 @@ class AdminController extends Controller
             ->getAllTaxonomies();
 
         return $this->render('AdminBundle::taxonomies.html.twig', [
-            'taxonomies' => $taxonomies
+            'taxonomies' => $taxonomies,
         ]);
     }
 
@@ -214,6 +216,63 @@ class AdminController extends Controller
 
         return $this->render('AdminBundle::taxonomy.html.twig', [
             'mode' => 'Edit',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function usersAction()
+    {
+        $userManager = $this->get('fos_user.user_manager');
+
+        $users = $userManager->findUsers();
+
+        return $this->render('AdminBundle::users.html.twig', [
+            'users' => $users,
+        ]);
+    }
+
+    public function deleteUserAction($id)
+    {
+        $userManager = $this->get('fos_user.user_manager');
+
+        $user = $userManager->findUserBy([
+            'id' => $id
+        ]);
+
+        if (!$user) {
+            throw $this->createNotFoundException('No user found for id ' . $id);
+        }
+
+        $userManager->deleteUser($user);
+
+        return $this->usersAction();
+    }
+
+    public function addUserAction(Request $request)
+    {
+        $form = $this->createForm(UserForm::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /* @var User $user */
+            $user = $form->getData();
+            $user->setPlainPassword($user->getPassword());
+            $user->setEnabled(true);
+
+            $this->get('fos_user.user_manager')
+                ->updateUser($user);
+
+            $this->addFlash(
+                'success',
+                'User was created!'
+            );
+
+            return $this->redirectToRoute('admin_users');
+        }
+
+        return $this->render('AdminBundle::user.html.twig', [
+            'mode' => 'Add',
             'form' => $form->createView(),
         ]);
     }

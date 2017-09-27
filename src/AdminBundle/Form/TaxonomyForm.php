@@ -24,14 +24,12 @@ class TaxonomyForm extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'data' => '61111',
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 5, 'max' => 20]),
                 ],
             ])
             ->add('slug', TextType::class, [
-                'data' => '2132131',
                 'constraints' => [
                     new NotBlank(),
                     new Length(['min' => 3, 'max' => 20]),
@@ -41,12 +39,7 @@ class TaxonomyForm extends AbstractType
                 'class' => Taxonomy::class,
                 'choice_label' => 'name',
                 'placeholder' => false,
-                //'constraints' => new NotBlank(),
             ])
-            /*->add('parent', ChoiceType::class, [
-                'empty_data' => 'No',
-            ])*/
-
             ->add('save', SubmitType::class, [
                 'label' => 'Save'
             ]);
@@ -54,30 +47,23 @@ class TaxonomyForm extends AbstractType
         $em = $options['entity_manager'];
 
         $builder
-            ->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($em) {
-                $entities = $em->getRepository('AdminBundle:Taxonomy')
+            ->addEventListener(FormEvents::SUBMIT, function(FormEvent $event) use ($em) {
+                $taxonomies = $em->getRepository(Taxonomy::class)
                     ->findAll();
 
                 $form = $event->getForm();
+                $data = $event->getData();
 
-                dump($event->getData());
-
-                if ($entities) {
-                    $topics = array();
-
-                    foreach($topics as $topic) {
-                        $topics[$topic->getName()] = $topic->getName();
-                    }
-                } else {
-                    $topics = null;
+                /* @var Taxonomy $data */
+                if (is_null($data->getParent())) {
+                    $data->setParent(0);
                 }
 
                 $form->add('parent', EntityType::class, [
-                    //'attr' => array('class' => 'topic'),
-                    'choices' => $topics,
+                    'choices' => $taxonomies,
+                    'choice_label' => 'name',
                     'class' => Taxonomy::class,
-                'choice_label' => 'name',
-                    ]);
+                ]);
             });
     }
 
@@ -96,7 +82,7 @@ class TaxonomyForm extends AbstractType
         $view->children['parent']->vars['choices'][] = new ChoiceView([], '0', 'No');
 
         usort($view->children['parent']->vars['choices'], function ($a, $b) {
-           return $a->value < $b->value ? -1 : 1;
+            return $a->value < $b->value ? -1 : 1;
         });
     }
 

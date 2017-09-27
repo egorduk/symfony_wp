@@ -21,7 +21,7 @@ class TaxonomyHelper
     {
         return $this->em
             ->createQueryBuilder()
-            ->select('t.name, t.slug, t.id, (SELECT t1.name FROM ' . Taxonomy::class . ' t1 WHERE t1.id = t.parent GROUP BY t.id) parent_name')
+            ->select('t.name, t.slug, t.id, IFNULL((SELECT t1.name FROM ' . Taxonomy::class . ' t1 WHERE t1.id = t.parent GROUP BY t.id), \'No\') parent_name')
             ->from(Taxonomy::class, 't')
             ->getQuery()
             ->getScalarResult();

@@ -53,3 +53,17 @@ admin_edit_taxonomy:
     defaults: { _controller: AdminBundle:Admin:editTaxonomy }
     requirements:
         id: '\d+'
+
+admin_users:
+    path:     /admin/users
+    defaults: { _controller: AdminBundle:Admin:users }
+
+admin_delete_user:
+    path:     /admin/user/delete/{id}
+    defaults: { _controller: AdminBundle:Admin:deleteUser }
+    requirements:
+        id: '\d+'
+
+admin_add_user:
+    path:     /admin/user/add
+    defaults: { _controller: AdminBundle:Admin:addUser }
