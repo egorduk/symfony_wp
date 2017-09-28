@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="AdminBundle\Entity\Post" table="post" repository-class="AdminBundle\Repository\PostRepository">
+        <id name="id" type="integer" column="id">
+            <generator strategy="IDENTITY"/>
+        </id>
+        <field name="name" type="string" column="name" length="50" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="content" type="string" column="content" length="255" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="excerpt" type="string" column="excerpt" length="25" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="postDate" type="datetime" column="post_date" nullable="false"/>
+        <many-to-one field="author" target-entity="AuthBundle\Entity\User" inversed-by="posts">
+            <join-column name="author_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="postType" target-entity="AdminBundle\Entity\PostType" inversed-by="posts">
+            <join-column name="post_type_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="taxonomy" target-entity="AdminBundle\Entity\Taxonomy" inversed-by="posts">
+            <join-column name="taxonomy_id" referenced-column-name="id" />
+        </many-to-one>
+    </entity>
+</doctrine-mapping>

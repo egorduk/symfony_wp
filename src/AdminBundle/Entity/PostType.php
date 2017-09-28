@@ -2,13 +2,14 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="AdminBundle\Repository\ContentTypeRepository")
- * @ORM\Table(name="content_type")
+ * @ORM\Entity(repositoryClass="AdminBundle\Repository\PostTypeRepository")
+ * @ORM\Table(name="post_type")
  */
-class ContentType
+class PostType
 {
     /**
      * @ORM\Id
@@ -31,6 +32,17 @@ class ContentType
      * @ORM\Column(type="string", length=150)
      */
     private $description;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Post", mappedBy="postType")
+     */
+    private $posts;
+
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -87,5 +99,38 @@ class ContentType
     {
         $this->description = $description;
     }
-}
 
+    /**
+     * Add post
+     *
+     * @param \AdminBundle\Entity\Post $post
+     *
+     * @return PostType
+     */
+    public function addPost(\AdminBundle\Entity\Post $post)
+    {
+        $this->posts[] = $post;
+
+        return $this;
+    }
+
+    /**
+     * Remove post
+     *
+     * @param \AdminBundle\Entity\Post $post
+     */
+    public function removePost(\AdminBundle\Entity\Post $post)
+    {
+        $this->posts->removeElement($post);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+}

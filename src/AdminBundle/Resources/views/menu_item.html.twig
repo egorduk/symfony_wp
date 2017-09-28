@@ -1,5 +1,5 @@
 <ul>
-    {% for contentType in contentTypes %}
-        <li>{{ contentType.name }}</li>
+    {% for postType in postTypes %}
+        <li><a href="{{ path('admin_add_post', {'id': postType.id}) }}">{{ postType.name }}</a></li>
     {% endfor %}
 </ul>

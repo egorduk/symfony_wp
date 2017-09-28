@@ -2,6 +2,7 @@
 
 namespace AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +32,17 @@ class Taxonomy
      * @ORM\Column(type="integer")
      */
     private $parent;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Post", mappedBy="taxonomy")
+     */
+    private $posts;
+
+
+    public function __construct()
+    {
+        $this->posts = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -92,5 +104,38 @@ class Taxonomy
     {
         return (string)$this->getId();
     }
-}
 
+    /**
+     * Add post
+     *
+     * @param \AdminBundle\Entity\Post $post
+     *
+     * @return Taxonomy
+     */
+    public function addPost(\AdminBundle\Entity\Post $post)
+    {
+        $this->posts[] = $post;
+
+        return $this;
+    }
+
+    /**
+     * Remove post
+     *
+     * @param \AdminBundle\Entity\Post $post
+     */
+    public function removePost(\AdminBundle\Entity\Post $post)
+    {
+        $this->posts->removeElement($post);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
+}

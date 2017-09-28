@@ -10,7 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class ContentTypeForm extends AbstractType
+class PostTypeForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -42,14 +42,12 @@ class ContentTypeForm extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'AdminBundle\Entity\ContentType',
-            'csrf_protection' => false,
-            //'allow_extra_fields' => true,
+            'data_class' => 'AdminBundle\Entity\PostType',
         ]);
     }
 
     public function getName()
     {
-        return 'admin_bundle_content_type';
+        return 'admin_bundle_post_type';
     }
 }

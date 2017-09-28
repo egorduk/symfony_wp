@@ -14,23 +14,23 @@ admin_post:
     path:     /admin/post
     defaults: { _controller: AdminBundle:Admin:post }
 
-admin_content_types:
-    path:     /admin/content_types
-    defaults: { _controller: AdminBundle:Admin:contentTypes }
+admin_post_types:
+    path:     /admin/post_types
+    defaults: { _controller: AdminBundle:Admin:postTypes }
 
-admin_add_content_type:
-    path:     /admin/content_type/add
-    defaults: { _controller: AdminBundle:Admin:addContentType }
+admin_add_post_type:
+    path:     /admin/post_type/add
+    defaults: { _controller: AdminBundle:Admin:addPostType }
 
-admin_delete_content_type:
-    path:     /admin/content_type/delete/{id}
-    defaults: { _controller: AdminBundle:Admin:deleteContentType }
+admin_delete_post_type:
+    path:     /admin/post_type/delete/{id}
+    defaults: { _controller: AdminBundle:Admin:deletePostType }
     requirements:
         id: '\d+'
 
-admin_edit_content_type:
-    path:     /admin/content_type/edit/{id}
-    defaults: { _controller: AdminBundle:Admin:editContentType }
+admin_edit_post_type:
+    path:     /admin/post_type/edit/{id}
+    defaults: { _controller: AdminBundle:Admin:editPostType }
     requirements:
         id: '\d+'
 
@@ -67,3 +67,9 @@ admin_delete_user:
 admin_add_user:
     path:     /admin/user/add
     defaults: { _controller: AdminBundle:Admin:addUser }
+
+admin_add_post:
+    path:     /admin/post/add/{id}
+    defaults: { _controller: AdminBundle:Admin:addPost }
+    requirements:
+        id: '\d+'
