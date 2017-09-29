@@ -1,5 +1,9 @@
 <ul>
     {% for postType in postTypes %}
-        <li><a href="{{ path('admin_add_post', {'id': postType.id}) }}">{{ postType.name }}</a></li>
+        {% if (mode == 'new') %}
+            <li><a href="{{ path('admin_add_post', {'id': postType.id}) }}">{{ postType.name }}</a></li>
+        {% else %}
+            <li><a href="{{ path('admin_view_posts', {'id': postType.id}) }}">{{ postType.name }}</a></li>
+        {% endif %}
     {% endfor %}
 </ul>

@@ -8,7 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class MenuController extends Controller
 {
-    public function contentTypesListAction()
+    public function contentTypesListAction($mode = 'new')
     {
         $postTypeRepository = $this->getDoctrine()
             ->getRepository(PostType::class);
@@ -16,7 +16,8 @@ class MenuController extends Controller
         $postTypes = $postTypeRepository->findAll();
 
         return $this->render('AdminBundle::menu_item.html.twig', [
-            'postTypes' => $postTypes
+            'postTypes' => $postTypes,
+            'mode' => $mode,
         ]);
     }
 }

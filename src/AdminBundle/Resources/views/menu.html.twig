@@ -1,10 +1,10 @@
-<div>Menu</div>
 <ul>
     <ul>
         Posts
-        <li><a href="{{ path('admin_posts') }}">All</a></li>
+        <li>All</li>
+        {{ render(controller('AdminBundle:Menu:contentTypesList', {'mode': 'view'})) }}
         <li>New</li>
-        {{ render(controller('AdminBundle:Menu:contentTypesList')) }}
+        {{ render(controller('AdminBundle:Menu:contentTypesList', {'mode': 'new'})) }}
     </ul>
     <ul>
         Users

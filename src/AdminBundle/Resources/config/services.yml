@@ -3,7 +3,12 @@ services:
         class: AdminBundle\Helper\TaxonomyHelper
         arguments: ['@doctrine.orm.entity_manager']
 
-    #app.exception_listener:
-    #    class: AdminBundle\EventListener\AddNoParentEventListener
-    #    tags:
-    #        - { name: kernel.event_listener, event: kernel.exception }
+    admin.post_helper:
+        class: AdminBundle\Helper\PostHelper
+        arguments: ['@doctrine.orm.entity_manager']
+
+    admin.type.entity_hidden:
+        class: AdminBundle\Form\Type\EntityHiddenType
+        arguments: ["@doctrine.orm.entity_manager"]
+        tags:
+        - { name: form.type }

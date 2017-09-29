@@ -39,7 +39,6 @@ class Post
     private $postDate;
 
     /**
-     * @ORM\Column(name="author_id")
      * @ORM\ManyToOne(targetEntity="User", inversedBy="posts")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
@@ -52,12 +51,22 @@ class Post
     private $postType;
 
     /**
-     * @ORM\Column(name="taxonomy_id")
      * @ORM\ManyToOne(targetEntity="Taxonomy", inversedBy="posts")
      * @ORM\JoinColumn(name="taxonomy_id", referencedColumnName="id")
      */
     private $taxonomy;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="PostStatus", inversedBy="posts")
+     * @ORM\JoinColumn(name="post_status_id", referencedColumnName="id")
+     */
+    private $postStatus;
+
+
+    public function __construct()
+    {
+        $this->postDate = new \DateTime();
+    }
 
     /**
      * Get id
@@ -235,5 +244,21 @@ class Post
     public function getTaxonomy()
     {
         return $this->taxonomy;
+    }
+
+    /**
+     * @return PostStatus
+     */
+    public function getPostStatus()
+    {
+        return $this->postStatus;
+    }
+
+    /**
+     * @param PostStatus $postStatus
+     */
+    public function setStatus($postStatus)
+    {
+        $this->postStatus = $postStatus;
     }
 }

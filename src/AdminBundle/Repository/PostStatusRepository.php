@@ -2,12 +2,13 @@
 
 namespace AdminBundle\Repository;
 
-use AdminBundle\Entity\Post;
+use AdminBundle\Entity\PostStatus;
+use AdminBundle\Entity\PostType;
 use Doctrine\ORM\EntityRepository;
 
-class PostRepository extends EntityRepository
+class PostStatusRepository extends EntityRepository
 {
-    public function save(Post $object, $flush = true)
+    public function save(PostStatus $object, $flush = false)
     {
         $this->getEntityManager()->persist($object);
 
@@ -18,7 +19,7 @@ class PostRepository extends EntityRepository
         return $object;
     }
 
-    public function remove(Post $object, $flush = true)
+    public function remove(PostStatus $object, $flush = false)
     {
         $this->getEntityManager()->remove($object);
 

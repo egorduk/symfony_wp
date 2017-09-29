@@ -73,3 +73,21 @@ admin_add_post:
     defaults: { _controller: AdminBundle:Admin:addPost }
     requirements:
         id: '\d+'
+
+admin_view_posts:
+    path:     /admin/posts/{id}
+    defaults: { _controller: AdminBundle:Admin:viewPosts }
+    requirements:
+        id: '\d+'
+
+admin_delete_post:
+    path:     /admin/post/delete/{id}
+    defaults: { _controller: AdminBundle:Admin:deletePost }
+    requirements:
+        id: '\d+'
+
+admin_edit_post:
+    path:     /admin/post/edit/{id}
+    defaults: { _controller: AdminBundle:Admin:editPost }
+    requirements:
+        id: '\d+'

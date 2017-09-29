@@ -2,6 +2,8 @@
 
 namespace AdminBundle\Controller;
 
+use AdminBundle\Entity\Post;
+use AdminBundle\Entity\PostStatus;
 use AdminBundle\Entity\PostType;
 use AdminBundle\Entity\Taxonomy;
 use AdminBundle\Form\ContentTypeForm;
@@ -21,16 +23,6 @@ class AdminController extends Controller
     }
 
     public function panelAction()
-    {
-        return $this->render('AdminBundle::panel.html.twig');
-    }
-
-    public function postsAction()
-    {
-        return $this->render('AdminBundle::panel.html.twig');
-    }
-
-    public function postAction()
     {
         return $this->render('AdminBundle::panel.html.twig');
     }
@@ -117,7 +109,7 @@ class AdminController extends Controller
             return $this->redirectToRoute('admin_post_types');
         }
 
-        return $this->render('AdminBundle::content_type.html.twig', [
+        return $this->render('AdminBundle::post_type.html.twig', [
             'mode' => 'Edit',
             'form' => $form->createView(),
         ]);
@@ -145,9 +137,7 @@ class AdminController extends Controller
             $formData = $form->getData();
 
             $taxonomyRepository = $this->getDoctrine()
-                ->getRepository(Tax);
-
-            dump($taxonomyRepository);
+                ->getRepository(Taxonomy::class);
 
             $taxonomyRepository->save($formData, true);
 
@@ -278,36 +268,127 @@ class AdminController extends Controller
         ]);
     }
 
-    public function addPostAction(Request $request, $id)
+    public function addPostAction(Request $request, $id = 0)
     {
-        $contentTypeRepository = $this->getDoctrine()
+        $postTypeRepository = $this->getDoctrine()
             ->getRepository(PostType::class);
 
-        $contentType = $contentTypeRepository->find($id);
+        $postType = $postTypeRepository->find($id);
 
-        if (!$contentType) {
-            throw $this->createNotFoundException('No content type found');
+        if (!$postType) {
+            throw $this->createNotFoundException('No post type found');
         }
 
-        $form = $this->createForm(PostForm::class);
+        $post = new Post();
+        $post->setPostType($postType);
+
+        $status = $this->getDoctrine()
+            ->getRepository(PostStatus::class)
+            ->findOneBy(['code' => 'p']);
+
+        $form = $this->createForm(PostForm::class, $post, ['default_status' => $status]);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
 
-            $contentTypeRepository->save($formData, true);
+            $this->getDoctrine()
+                ->getRepository(Post::class)
+                ->save($formData, true);
 
             $this->addFlash(
                 'success',
                 'Post was created!'
             );
 
-            //return $this->redirectToRoute('admin_taxonomies');
+            $postTypeId = $postType->getId();
+
+            return $this->viewPostsAction($postTypeId);
         }
 
         return $this->render('AdminBundle::post.html.twig', [
             'mode' => 'Add',
+            'form' => $form->createView(),
+        ]);
+    }
+
+    public function postsAction()
+    {
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findAll();
+
+        return $this->render('AdminBundle::posts.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
+
+    public function viewPostsAction($id = 0)
+    {
+        $posts = $this->getDoctrine()
+            ->getRepository(Post::class)
+            ->findBy(['postType' => $id]);
+
+        return $this->render('AdminBundle::posts.html.twig', [
+            'posts' => $posts,
+        ]);
+    }
+
+    public function deletePostAction($id)
+    {
+        $postRepository = $this->getDoctrine()
+            ->getRepository(Post::class);
+
+        /* @var Post $post */
+        $post = $postRepository->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('No post found for id ' . $id);
+        }
+
+        $postTypeId = $post->getPostType()
+            ->getId();
+
+        $postRepository->remove($post);
+
+        return $this->viewPostsAction($postTypeId);
+    }
+
+    public function editPostAction(Request $request, $id)
+    {
+        $postRepository = $this->getDoctrine()
+            ->getRepository(Post::class);
+
+        $post = $postRepository->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('No post found');
+        }
+
+        $form = $this->createForm(PostForm::class, $post);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /* @var Post $formData */
+            $formData = $form->getData();
+
+            $postRepository->save($formData);
+
+            $this->addFlash(
+                'success',
+                'Post was updated!'
+            );
+
+            $postTypeId = $formData->getPostType()
+                ->getId();
+
+            return $this->viewPostsAction($postTypeId);
+        }
+
+        return $this->render('AdminBundle::post.html.twig', [
+            'mode' => 'Save',
             'form' => $form->createView(),
         ]);
     }

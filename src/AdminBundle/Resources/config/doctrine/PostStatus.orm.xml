@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+    <entity name="AdminBundle\Entity\PostStatus" table="post_status" repository-class="AdminBundle\Repository\PostStatusRepository">
+        <id name="id" type="integer" column="id">
+            <generator strategy="IDENTITY"/>
+        </id>
+        <field name="name" type="string" column="name" length="20" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <field name="code" type="string" column="code" length="3" nullable="false">
+            <options>
+                <option name="fixed"/>
+            </options>
+        </field>
+        <one-to-many field="posts" target-entity="AdminBundle\Entity\Post" mapped-by="postStatus" />
+    </entity>
+</doctrine-mapping>
