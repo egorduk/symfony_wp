@@ -1,0 +1,5 @@
+<div>Username - {{ user.username }}</div>
+<div>Email - {{ user.email }}</div>
+<div>Role - {{ user.roles.0 }}</div>
+<div>Last login - {{ user.lastlogin | date("m/d/Y \\a\\t g:i a") }}</div>
+<div><a href="{{ logout_url(key = null) }}">Logout</a></div>

@@ -1,0 +1,6 @@
+<ul>
+    {% for postType in postTypes %}
+        <li><a href="{{ path('user_post', {'id': postType.id}) }}">{{ postType.name }}</a></li>
+        <li>{{ postType.name }}</li>
+    {% endfor %}
+</ul>

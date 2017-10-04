@@ -2,8 +2,21 @@
 
 {% block body %}
     {% include 'AdminBundle::menu.html.twig' %}
-    {{ mode }} Post
-    {{ form_start(form) }}
-    {{ form_errors(form) }}
-    {{ form_end(form) }}
+    {% if mode is defined and form is defined %}
+        {{ mode }} Post
+        {{ form_start(form) }}
+        {{ form_errors(form) }}
+        {{ form_end(form) }}
+    {% else %}
+        <li>Name - {{ post.name }}</li>
+        <li>Date post - {{ post.postDate | date() }}</li>
+        <li>Excerpt - {{ post.excerpt }}</li>
+        <li>Content - {{ post.content }}</li>
+        <li>Post type - {{ post.postType.name }}</li>
+        <li>Taxonomy - {{ post.taxonomy.name }}</li>
+        <li>Status - {{ post.postStatus.name }}</li>
+        <li>Author - {{ post.author.username }}</li>
+        <li><a href="{{ path('admin_edit_post', {'id': post.id}) }}">Edit</a></li>
+        <li><a href="{{ path('admin_delete_post', {'id': post.id}) }}">Delete</a></li>
+    {% endif %}
 {% endblock %}

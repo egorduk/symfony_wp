@@ -1,0 +1,5 @@
+user_post:
+    path:     /post/{id}
+    defaults: { _controller: UserBundle:User:viewPost }
+    requirements:
+        id: '\d+'

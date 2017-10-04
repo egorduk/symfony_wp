@@ -30,7 +30,7 @@
             <join-column name="taxonomy_id" referenced-column-name="id" />
         </many-to-one>
         <many-to-one field="postStatus" target-entity="AdminBundle\Entity\PostStatus" inversed-by="posts">
-            <join-column name="status_id" referenced-column-name="id" />
+            <join-column name="post_status_id" referenced-column-name="id" />
         </many-to-one>
     </entity>
 </doctrine-mapping>

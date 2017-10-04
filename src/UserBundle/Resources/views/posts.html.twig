@@ -1,0 +1,9 @@
+<ul>
+    {% for post in posts %}
+        <li><a href="{{ path('user_post', {'id': post.id}) }}">{{ post.name }}</a></li>
+        <li>Date post - {{ post.postDate | date() }}</li>
+        <li>Excerpt - {{ post.excerpt }}</li>
+        <li>Author - {{ post.author.username }}</li>
+        <li>Post type - {{ post.postType.name }}</li>
+    {% endfor %}
+</ul>

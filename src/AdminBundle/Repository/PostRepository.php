@@ -3,6 +3,8 @@
 namespace AdminBundle\Repository;
 
 use AdminBundle\Entity\Post;
+use AdminBundle\Entity\PostStatus;
+use AdminBundle\Entity\PostType;
 use Doctrine\ORM\EntityRepository;
 
 class PostRepository extends EntityRepository
@@ -27,5 +29,19 @@ class PostRepository extends EntityRepository
         }
 
         return true;
+    }
+
+    public function getPublishPosts()
+    {
+        return $this->getEntityManager()
+            ->createQueryBuilder()
+            ->select('p')
+            ->from(Post::class, 'p')
+            ->join('p.postStatus', 'ps')
+            ->where('ps.code = :publish')
+            ->setParameter('publish', 'p')
+            ->getQuery()
+            ->getResult()
+        ;
     }
 }

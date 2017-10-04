@@ -10,10 +10,6 @@ admin_posts:
   path:     /admin/posts
   defaults: { _controller: AdminBundle:Admin:posts }
 
-admin_post:
-    path:     /admin/post
-    defaults: { _controller: AdminBundle:Admin:post }
-
 admin_post_types:
     path:     /admin/post_types
     defaults: { _controller: AdminBundle:Admin:postTypes }
@@ -89,5 +85,11 @@ admin_delete_post:
 admin_edit_post:
     path:     /admin/post/edit/{id}
     defaults: { _controller: AdminBundle:Admin:editPost }
+    requirements:
+        id: '\d+'
+
+admin_post:
+    path:     /admin/post/view/{id}
+    defaults: { _controller: AdminBundle:Admin:viewPost }
     requirements:
         id: '\d+'

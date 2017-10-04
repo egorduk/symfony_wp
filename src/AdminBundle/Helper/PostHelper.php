@@ -3,6 +3,7 @@
 namespace AdminBundle\Helper;
 
 use AdminBundle\Entity\Post;
+use AdminBundle\Entity\Taxonomy;
 use Doctrine\ORM\EntityManager;
 
 class PostHelper

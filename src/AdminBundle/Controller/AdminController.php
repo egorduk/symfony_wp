@@ -286,7 +286,13 @@ class AdminController extends Controller
             ->getRepository(PostStatus::class)
             ->findOneBy(['code' => 'p']);
 
-        $form = $this->createForm(PostForm::class, $post, ['default_status' => $status]);
+        if (!$status) {
+            throw $this->createNotFoundException('No post status found');
+        }
+
+        $post->setPostStatus($status);
+
+        $form = $this->createForm(PostForm::class, $post);
 
         $form->handleRequest($request);
 
@@ -368,6 +374,8 @@ class AdminController extends Controller
 
         $form = $this->createForm(PostForm::class, $post);
 
+        dump($post);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -390,6 +398,22 @@ class AdminController extends Controller
         return $this->render('AdminBundle::post.html.twig', [
             'mode' => 'Save',
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function viewPostAction($id = 0)
+    {
+        $postRepository = $this->getDoctrine()
+            ->getRepository(Post::class);
+
+        $post = $postRepository->find($id);
+
+        if (!$post) {
+            throw $this->createNotFoundException('No post found');
+        }
+
+        return $this->render('AdminBundle::post.html.twig', [
+            'post' => $post,
         ]);
     }
 }

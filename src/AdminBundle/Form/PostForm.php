@@ -5,7 +5,6 @@ namespace AdminBundle\Form;
 use AdminBundle\Entity\PostStatus;
 use AdminBundle\Entity\PostType;
 use AdminBundle\Entity\Taxonomy;
-use AdminBundle\Form\DataTransformer\EntityHiddenTransformer;
 use AdminBundle\Form\Type\EntityHiddenType;
 use AuthBundle\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -57,9 +56,6 @@ class PostForm extends AbstractType
                 'choice_label' => 'name',
                 'placeholder' => false,
                 'expanded' => true,
-               // 'required' => true,
-                'data' => $options['default_status'],
-                //'empty_data' => '1',
             ])
             ->add('postType', EntityHiddenType::class, [
                 'class' => PostType::class,
@@ -73,7 +69,6 @@ class PostForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => 'AdminBundle\Entity\Post',
-            'default_status' => null,
         ]);
     }
 

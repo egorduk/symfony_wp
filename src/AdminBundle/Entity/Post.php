@@ -257,7 +257,7 @@ class Post
     /**
      * @param PostStatus $postStatus
      */
-    public function setStatus($postStatus)
+    public function setPostStatus($postStatus)
     {
         $this->postStatus = $postStatus;
     }

@@ -4,9 +4,28 @@
     {% if is_granted('ROLE_ADMIN') %}
         <div><a href="{{ path('admin_panel') }}">Admin panel</a></div>
     {% endif %}
-    <div>Username - {{ user.username }}</div>
-    <div>Email - {{ user.email }}</div>
-    <div>Role - {{ user.roles.0 }}</div>
-    <div>Last login - {{ user.lastlogin | date("m/d/Y \\a\\t g:i a") }}</div>
-    <div><a href="{{ logout_url(key = null) }}">Logout</a></div>
+    {% block user_info %}
+        {% include 'AuthBundle::user_info.html.twig' %}
+    {% endblock %}
+    {% if is_granted('ROLE_USER') %}
+        {% block left_sidebar %}
+            <ul>
+                <ul>
+                    Post types
+                    {{ render(controller('UserBundle:Menu:postTypesList')) }}
+                </ul>
+            </ul>
+        {% endblock %}
+        {% block menu %}
+            <ul>
+                <ul>
+                    Posts
+                    {{ render(controller('UserBundle:Menu:postsList')) }}
+                </ul>
+            </ul>
+        {% endblock %}
+        {% block right_sidebar %}
+            right
+        {% endblock %}
+    {% endif %}
 {% endblock %}
